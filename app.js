@@ -5,7 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const compression = require("compression");
 const helmet = require("helmet");
-const dbConnection = require("./dbConnection");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -14,8 +13,13 @@ const catalogRouter = require("./routes/catalog");
 var app = express();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-
-const dev_db_url = dbConnection();
+let dev_db_url;
+try {
+  const dbConnection = require("./dbConnection");
+  dev_db_url = dbConnection();
+} catch (err) {
+  dev_db_url = null;
+}
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 main().catch((err) => console.log(err));
