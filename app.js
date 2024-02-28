@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const compression = require("compression");
 const helmet = require("helmet");
+const dbConnection = require("./dbConnection");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -14,8 +15,7 @@ var app = express();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const dev_db_url =
-  "mongodb+srv://samirfanilla:sanjudas435@myatlasclusteredu.pagxys9.mongodb.net/local_library?retryWrites=true&w=majority&appName=myAtlasClusterEDU";
+const dev_db_url = dbConnection();
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 main().catch((err) => console.log(err));
